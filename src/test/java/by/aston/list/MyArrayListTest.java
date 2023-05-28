@@ -1,5 +1,6 @@
 package by.aston.list;
 
+import by.aston.collection.MyCollections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,20 +9,20 @@ import java.util.Comparator;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-class ArrayListTest {
+class MyArrayListTest {
 
-    private ArrayList<Integer> list;
-    private ArrayList<Integer> sortedList;
-    private ArrayList<Integer> reverseSortList;
+    private MyArrayList<Integer> list;
+    private MyArrayList<Integer> sortedList;
+    private MyArrayList<Integer> reverseSortList;
     private final Integer[] elements = {10, 5, 12, 42, 33, 900, 43, 5, 123, 643, 123, 543, 662, 221, 888, 19, 43, 12, 55, 3};
     private final Integer[] sortElements = {3, 5, 5, 10, 12, 12, 19, 33, 42, 43, 43, 55, 123, 123, 221, 543, 643, 662, 888, 900};
     private final Integer[] sortByComparator = {900, 888, 662, 643, 543, 221, 123, 123, 55, 43, 43, 42, 33, 19, 12, 12, 10, 5, 5, 3};
 
     @BeforeEach
     void setUp() {
-        list = new ArrayList<>();
-        sortedList = new ArrayList<>();
-        reverseSortList = new ArrayList<>();
+        list = new MyArrayList<>();
+        sortedList = new MyArrayList<>();
+        reverseSortList = new MyArrayList<>();
         Collections.addAll(list, elements);
         Collections.addAll(sortedList, sortElements);
         Collections.addAll(reverseSortList, sortByComparator);
@@ -94,14 +95,14 @@ class ArrayListTest {
     }
 
     @Test
-    void quickSort() {
-        list.quickSort();
-        assertThat(list).isEqualTo(sortedList);
+    void sortByComparator() {
+        list.sort(Comparator.reverseOrder());
+        assertThat(list).isEqualTo(reverseSortList);
     }
 
     @Test
-    void sort() {
-        list.sort(Comparator.reverseOrder());
-        assertThat(list).isEqualTo(reverseSortList);
+    void quickSort() {
+        MyCollections.quickSort(list);
+        assertThat(list).isEqualTo(sortedList);
     }
 }

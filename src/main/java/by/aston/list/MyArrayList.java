@@ -1,6 +1,7 @@
 package by.aston.list;
 
-import java.io.Serializable;
+import by.aston.collection.MyCollections;
+
 import java.util.*;
 
 /**
@@ -10,13 +11,13 @@ import java.util.*;
  * this class provides methods to manipulate the size of the array that is
  * used internally to store the list.
  *
- * <p>An application can increase the capacity of an {@code ArrayList} instance
+ * <p>An application can increase the capacity of an {@code MyArrayList} instance
  * before adding a large number of elements.
  *
  * @param <T> the type of elements in this list
  * @author Yulyan Paulouski
  */
-public class ArrayList<T extends Comparable<T>> extends AbstractList<T> implements Serializable {
+public class MyArrayList<T> extends AbstractList<T> {
 
     /**
      * Default capacity of list
@@ -40,7 +41,7 @@ public class ArrayList<T extends Comparable<T>> extends AbstractList<T> implemen
      * @throws IllegalArgumentException if the specified initial capacity
      *                                  is negative
      */
-    public ArrayList(int initCapacity) {
+    public MyArrayList(int initCapacity) {
         if (initCapacity > 0) {
             elements = new Object[initCapacity];
         } else if (initCapacity == 0) {
@@ -53,7 +54,7 @@ public class ArrayList<T extends Comparable<T>> extends AbstractList<T> implemen
     /**
      * Constructs an empty list with an initial capacity of ten.
      */
-    public ArrayList() {
+    public MyArrayList() {
         this(DEFAULT_CAPACITY);
     }
 
@@ -195,21 +196,13 @@ public class ArrayList<T extends Comparable<T>> extends AbstractList<T> implemen
     }
 
     /**
-     * Sorts this list according to the implementation of the element T
-     * of the Comparable interface
-     */
-    public void quickSort() {
-        quickSort(elements, 0, size - 1, null);
-    }
-
-    /**
      * Sorts this list according to the order induced by the specified Comparator.
      * The sort is stable: this method must not reorder equal elements.
      *
      * @param c the Comparator used to compare list elements.
      */
     public void sort(Comparator<? super T> c) {
-        quickSort(elements, 0, size - 1, c);
+        MyCollections.sortByComparator(this, c);
     }
 
     /**
@@ -224,88 +217,6 @@ public class ArrayList<T extends Comparable<T>> extends AbstractList<T> implemen
     }
 
     /**
-     * Sorts the specified range of the specified array of objects
-     * according to the order induced by the specified comparator.
-     *
-     * @param array array to sort
-     * @param from  the first index to sorting
-     * @param to    the last index to sorting
-     * @param c     the Comparator used to compare list elements.
-     */
-    private void quickSort(Object[] array, int from, int to, Comparator<? super T> c) {
-        if (from >= to) return;
-
-        int left = from;
-        int right = to;
-        int middle = (from + to) / 2;
-        T midElement = (T) array[middle];
-
-        while (left <= right) {
-            int[] boards;
-            if (c != null) {
-                boards = compareWithComparator(c, left, right, midElement, array);
-            } else {
-                boards = compareWithoutComparator(left, right, midElement, array);
-            }
-            left = boards[0];
-            right = boards[1];
-            if (left <= right) {
-                T tmp = (T) array[left];
-                array[left] = array[right];
-                array[right] = tmp;
-                left++;
-                right--;
-            }
-        }
-        quickSort(array, from, right, c);
-        quickSort(array, left, to, c);
-    }
-
-    /**
-     * Compares the midElement with the left and right part
-     * with the help of Comparator
-     *
-     * @param c          the Comparator used to compare list elements.
-     * @param left       the left border of compare
-     * @param right      the right border of compare
-     * @param midElement the element to compare with
-     * @param array      an array with elements to compare
-     * @return array[left offset, right offset]
-     */
-    private int[] compareWithComparator(Comparator<? super T> c, int left, int right,
-                                        T midElement, Object[] array) {
-        while (c.compare(midElement, (T) array[left]) > 0) {
-            left++;
-        }
-        while (c.compare(midElement, (T) array[right]) < 0) {
-            right--;
-        }
-        return new int[]{left, right};
-    }
-
-    /**
-     * Compares the midElement with the left and right part
-     * without Comparator but use method compareTo of interface
-     * Comparable
-     *
-     * @param left       the left border of compare
-     * @param right      the right border of compare
-     * @param midElement the element to compare with
-     * @param array      an array with elements to compare
-     * @return array[left offset, right offset]
-     */
-    private int[] compareWithoutComparator(int left, int right, T midElement, Object[] array) {
-        while (midElement.compareTo((T) array[left]) > 0) {
-            left++;
-        }
-        while (midElement.compareTo((T) array[right]) < 0) {
-            right--;
-        }
-        return new int[]{left, right};
-    }
-
-
-    /**
      * Compares the specified object with this list for equality.
      * Returns true if and only if the specified object is also a list,
      * both lists have the same size, and all corresponding pairs
@@ -318,8 +229,8 @@ public class ArrayList<T extends Comparable<T>> extends AbstractList<T> implemen
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        ArrayList<?> arrayList = (ArrayList<?>) o;
-        return size == arrayList.size && Arrays.equals(elements, arrayList.elements);
+        MyArrayList<?> myArrayList = (MyArrayList<?>) o;
+        return size == myArrayList.size && Arrays.equals(elements, myArrayList.elements);
     }
 
     /**
