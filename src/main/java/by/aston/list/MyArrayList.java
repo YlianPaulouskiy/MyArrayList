@@ -52,6 +52,22 @@ public class MyArrayList<T> extends AbstractList<T> {
     }
 
     /**
+     * Constructs a list containing the array elements in the
+     * order in which they lie in the array.
+     *
+     * @param initArray the array whose elements are to be placed into this list
+     */
+    public MyArrayList(T[] initArray) {
+        if (initArray != null) {
+            this.elements = initArray;
+            this.size = initArray.length;
+            grow();
+        } else {
+            throw new NullPointerException("Initialization array is null.");
+        }
+    }
+
+    /**
      * Constructs an empty list with an initial capacity of ten.
      */
     public MyArrayList() {

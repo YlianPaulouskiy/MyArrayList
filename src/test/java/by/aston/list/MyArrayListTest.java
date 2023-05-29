@@ -4,7 +4,6 @@ import by.aston.collection.MyCollections;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Collections;
 import java.util.Comparator;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -20,12 +19,9 @@ class MyArrayListTest {
 
     @BeforeEach
     void setUp() {
-        list = new MyArrayList<>();
-        sortedList = new MyArrayList<>();
-        reverseSortList = new MyArrayList<>();
-        Collections.addAll(list, elements);
-        Collections.addAll(sortedList, sortElements);
-        Collections.addAll(reverseSortList, sortByComparator);
+        list = new MyArrayList<>(elements);
+        sortedList = new MyArrayList<>(sortElements);
+        reverseSortList = new MyArrayList<>(sortByComparator);
     }
 
     @Test
